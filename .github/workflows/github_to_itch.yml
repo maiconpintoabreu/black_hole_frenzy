@@ -1,0 +1,73 @@
+name: Publish Black Hole Frenzy The Hero to Itch.io
+
+on:
+ push:
+  branches:
+  - main
+ pull_request:
+  branches:
+  - main
+env:
+ BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }} # Needs to be added through github
+ GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ IS_MAIN: ${{ contains(github.ref, 'main') }}
+ PROJECT_NAME: "Black Hole Frenzy"
+
+jobs:
+
+ Export:
+  runs-on: ubuntu-latest
+  steps:
+  - uses: actions/checkout@v2
+  
+  - name: Download + Authorize Godot
+    run: |
+       curl -L -o godot.zip https://github.com/godotengine/godot/releases/download/4.2.1-stable/Godot_v4.2.1-stable_linux.x86_64.zip
+       unzip godot.zip
+       mv Godot_v4.2.1-stable_linux.x86_64 godot
+       ls
+       chmod +x godot
+ 
+  - name: Download Export Templates
+    run: |
+     curl -L -o export_templates.zip https://github.com/godotengine/godot/releases/download/4.2.1-stable/Godot_v4.2.1-stable_export_templates.tpz
+     unzip export_templates.zip
+  
+  - name: Install Export Templates
+    run: |
+     mkdir -p ~/.local/share/godot/export_templates/4.2.1.stable
+     mv ./templates/* ~/.local/share/godot/export_templates/4.2.1.stable
+  
+  - name: Export Web
+    run: |
+     mkdir -p ./Build
+     mkdir -p ./Build/web
+     mkdir -p ./Build/linux
+     mkdir -p ./Build/win
+     mkdir -p ./Build/mac
+     ./godot --headless --path ./ --export-release "Web" ./Build/web/index.html
+     ./godot --headless --path ./ --export-release "Linux" ./Build/linux/godoph.x86_64
+     ./godot --headless --path ./ --export-release "Windows" ./Build/win/godoph.exe
+     ./godot --headless --path ./ --export-release "Mac" ./Build/mac/godoph.zip
+    
+  - name: Download + Authorize Butler
+    run: |
+        curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+        unzip butler.zip
+        chmod +x butler
+        ./butler -V
+
+  - name: Login To Butler
+    run: ./butler login
+
+  - name: Push Web to Itch
+    run: ./butler push ./Build/web maiconspas/black-hole-frenzy:web
+
+  - name: Push Linux to Itch
+    run: ./butler push ./Build/linux maiconspas/black-hole-frenzy:linux
+
+  - name: Push Windows to Itch
+    run: ./butler push ./Build/win maiconspas/black-hole-frenzy:windows
+
+  - name: Push Mac to Itch
+    run: ./butler push ./Build/mac maiconspas/black-hole-frenzy:mac
