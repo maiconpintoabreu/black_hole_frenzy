@@ -113,3 +113,10 @@ func _on_forward_button_down() -> void:
 
 func _on_forward_button_up() -> void:
 	is_thrusting = false
+
+
+func _on_toggle_mobile_ui_toggled(toggled_on: bool) -> void:
+	if not toggled_on:
+		is_thrusting = false
+		is_turning_right = false
+		is_turning_left = false

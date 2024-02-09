@@ -14,6 +14,8 @@ var character_by_black_hole:Vector2
 var character_distance_black_hole:float
 @onready var area_2d: Area2D = $CanvasLayer2/BlackHole/Area2D
 @onready var mobile_ui: Control = $CanvasLayer/GameUI/MobileUI
+@onready var pause_panel: Panel = $CanvasLayer/PausePanel
+
 
 var level:int = 1
 var max_level:int = 10
@@ -25,6 +27,7 @@ func _ready() -> void:
 	is_on_menu = true
 	start_menu_panel.show()
 	game_ui.hide()
+	pause_panel.hide()
 	fuel_spawner_timer.stop()
 
 func _physics_process(_delta: float) -> void:
@@ -36,11 +39,13 @@ func _physics_process(_delta: float) -> void:
 	character_body_2d.apply_force(gravity_direction*(gravity_pull*level),gravity_direction)
 
 func _on_start_button_pressed() -> void:
+	get_tree().paused = false
 	character_body_2d.reset()
 	is_on_menu = false
 	is_dead = false
 	start_menu_panel.hide()
 	game_over_panel.hide()
+	pause_panel.hide()
 	score = 0
 	game_ui.show()
 	for fuel in fuel_spawner.get_children():
@@ -77,3 +82,13 @@ func _on_button_toggled(toggled_on: bool) -> void:
 		mobile_ui.show()
 	else:
 		mobile_ui.hide()
+
+
+func _on_pause_button_pressed() -> void:
+	pause_panel.show()
+	get_tree().paused = true
+
+
+func _on_continue_button_pressed() -> void:
+	pause_panel.hide()
+	get_tree().paused = false
