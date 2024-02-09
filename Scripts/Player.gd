@@ -5,8 +5,8 @@ class_name Player
 @onready var right_turbune: AnimatedSprite2D = $RightTurbune
 @onready var power_bar: ProgressBar = $"../CanvasLayer/GameUI/PowerBar"
 
-@export var engine_power:float = 120000
-@export var spin_power:float = 250000
+@export var engine_power:float = 1.4
+@export var spin_power:float = 1.8
 @export var power_drain:float = 10
 var thrust := Vector2.ZERO
 var rotation_dir:float = 0
@@ -35,6 +35,8 @@ func refill_fuel(fuel:float):
 func _ready()->void:
 	start_position = global_position
 	start_rotation = global_rotation
+	freeze = true
+	is_dead = true
 
 func get_input()->void:
 	thrust = Vector2.ZERO

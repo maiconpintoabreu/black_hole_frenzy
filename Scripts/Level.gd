@@ -1,7 +1,7 @@
 extends Node2D
 var score:float = 0
 var gravity_direction:Vector2 = Vector2.ZERO
-@export var gravity_pull = 60000
+@export var gravity_pull = 0.1
 @onready var character_body_2d: RigidBody2D = $CharacterBody2D
 @onready var black_hole: ColorRect = $CanvasLayer2/BlackHole
 @onready var game_over_panel: Panel = $CanvasLayer/GameOverPanel
@@ -10,7 +10,8 @@ var gravity_direction:Vector2 = Vector2.ZERO
 @onready var game_ui: Control = $CanvasLayer/GameUI
 @onready var fuel_spawner_timer: Timer = $FuelSpawnerTimer
 @onready var fuel_spawner: Node2D = $FuelSpawner
-
+var character_by_black_hole:Vector2
+var character_distance_black_hole:float
 
 var level:int = 1
 var max_level:int = 10
@@ -27,8 +28,10 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if is_on_menu: return
 	if is_dead: return
-	gravity_direction = character_body_2d.global_position.direction_to(get_viewport_rect().get_center()).normalized()
-	character_body_2d.apply_force(gravity_direction*gravity_pull,gravity_direction)
+	character_by_black_hole = character_body_2d.global_position.direction_to(get_viewport_rect().get_center())
+	character_distance_black_hole = character_body_2d.global_position.distance_to(get_viewport_rect().get_center())
+	gravity_direction = character_by_black_hole.normalized()
+	character_body_2d.apply_force(gravity_direction*(gravity_pull*level),gravity_direction)
 
 func _on_start_button_pressed() -> void:
 	character_body_2d.reset()
@@ -50,13 +53,16 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		fuel_spawner_timer.stop()
 		for fuel in fuel_spawner.get_children():
 			fuel.queue_free()
-
+func round_place(num:float,places:int)->float:
+	return (round(num*pow(10,places))/pow(10,places))
+	
 func _on_level_timer_timeout() -> void:
 	if is_on_menu: return
 	if is_dead: return
-	score = score+1
-	score_label.text = str("Score: ",score)
-
+	score = score+(50/character_distance_black_hole)*level
+	score_label.text = str("Score: ",round_place(score,1))
+	if fmod(score, 20*level) == 0.0:
+		level = clamp(level+1,1,max_level)
 
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()

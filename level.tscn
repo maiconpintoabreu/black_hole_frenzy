@@ -288,7 +288,7 @@ text = "Black Hole Frenzy"
 
 [node name="CharacterBody2D" type="RigidBody2D" parent="."]
 position = Vector2(177, 89)
-mass = 2000.0
+mass = 0.01
 gravity_scale = 0.0
 can_sleep = false
 linear_damp = 1.0
