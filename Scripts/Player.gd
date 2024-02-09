@@ -4,6 +4,8 @@ class_name Player
 @onready var left_turbune: AnimatedSprite2D = $LeftTurbune
 @onready var right_turbune: AnimatedSprite2D = $RightTurbune
 @onready var power_bar: ProgressBar = $"../CanvasLayer/GameUI/PowerBar"
+@onready var ship: Sprite2D = $Ship
+
 
 @export var engine_power:float = 1.4
 @export var spin_power:float = 1.8
@@ -46,6 +48,8 @@ func get_input()->void:
 	rotation_dir = Input.get_axis("ui_left", "ui_right")
 	if is_turning_left:
 		rotation_dir = -1
+	elif is_turning_right:
+		rotation_dir = 1
 	if Input.is_action_pressed("ui_up") or is_thrusting:
 		thrust = transform.x * engine_power
 		left_turbune.show()
@@ -59,7 +63,12 @@ func get_input()->void:
 			left_turbune.show()
 		
 func _physics_process(delta:float)->void:
-	if is_dead: return
+	if is_dead: 
+		ship.material.set_shader_parameter("dissolve_value",lerp(ship.material.get_shader_parameter("dissolve_value"),0.0,0.1))
+		return
+	else:
+		ship.material.set_shader_parameter("dissolve_value",lerp(ship.material.get_shader_parameter("dissolve_value"),1.0,0.1))
+		
 	if power_bar.value < 1: 
 		left_turbune.hide()
 		right_turbune.hide()

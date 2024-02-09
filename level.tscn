@@ -74,6 +74,9 @@ expand_margin_right = 10.0
 shadow_color = Color(0, 0, 0, 0.854902)
 shadow_size = 2
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tsrve"]
+size = Vector2(11, 8)
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_osjon"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_p6wq0"]
@@ -83,9 +86,6 @@ noise = SubResource("FastNoiseLite_osjon")
 shader = ExtResource("7_lynbn")
 shader_parameter/dissolve_value = 1.0
 shader_parameter/dissolve_texture = SubResource("NoiseTexture2D_p6wq0")
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_tsrve"]
-size = Vector2(11, 8)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_o1t2e"]
 animations = [{
@@ -199,9 +199,10 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -27.0
+offset_top = -23.0
 grow_horizontal = 2
 grow_vertical = 0
+theme = ExtResource("5_n0hgv")
 value = 100.0
 
 [node name="PowersLabel" type="Label" parent="CanvasLayer/GameUI"]
@@ -217,7 +218,8 @@ offset_right = 25.0
 offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 0
-text = "Power"
+text = "Fuel"
+horizontal_alignment = 1
 
 [node name="Control" type="Control" parent="CanvasLayer/GameUI"]
 layout_mode = 1
@@ -230,27 +232,37 @@ offset_right = 86.0
 offset_bottom = -41.0
 grow_vertical = 0
 
-[node name="Left" type="Button" parent="CanvasLayer/GameUI/Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GameUI/Control"]
 layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = -16.0
+offset_top = -54.0
+offset_right = 134.0
+offset_bottom = 46.0
+
+[node name="Forward" type="Button" parent="CanvasLayer/GameUI/Control/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_n0hgv")
+text = "^"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/GameUI/Control/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Left" type="Button" parent="CanvasLayer/GameUI/Control/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 3
 theme = ExtResource("5_n0hgv")
 text = "L"
 
-[node name="Right" type="Button" parent="CanvasLayer/GameUI/Control"]
-offset_left = 34.0
-offset_right = 51.0
-offset_bottom = 29.0
+[node name="Right" type="Button" parent="CanvasLayer/GameUI/Control/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 3
 theme = ExtResource("5_n0hgv")
 text = "R"
-
-[node name="Forward" type="Button" parent="CanvasLayer/GameUI/Control"]
-layout_mode = 0
-offset_left = 16.0
-offset_top = -39.0
-offset_right = 33.0
-offset_bottom = -8.0
-text = "^"
 
 [node name="GameOverPanel" type="Panel" parent="CanvasLayer"]
 visible = false
@@ -346,14 +358,14 @@ linear_damp = 1.0
 angular_damp = 2.0
 script = ExtResource("2_odqwc")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(-1.5, 0)
+shape = SubResource("RectangleShape2D_tsrve")
+
 [node name="Ship" type="Sprite2D" parent="CharacterBody2D"]
 material = SubResource("ShaderMaterial_jlvjp")
 rotation = 1.57079
 texture = ExtResource("2_nexx3")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
-position = Vector2(-1.5, 0)
-shape = SubResource("RectangleShape2D_tsrve")
 
 [node name="LeftTurbune" type="AnimatedSprite2D" parent="CharacterBody2D"]
 visible = false
@@ -378,12 +390,12 @@ anchor_mode = 0
 [connection signal="timeout" from="LevelTimer" to="." method="_on_level_timer_timeout"]
 [connection signal="timeout" from="FuelSpawnerTimer" to="FuelSpawner" method="_on_fuel_spawner_timer_timeout"]
 [connection signal="body_entered" from="CanvasLayer2/BlackHole/Area2D" to="." method="_on_area_2d_body_entered"]
-[connection signal="button_down" from="CanvasLayer/GameUI/Control/Left" to="CharacterBody2D" method="_on_left_button_down"]
-[connection signal="button_up" from="CanvasLayer/GameUI/Control/Left" to="CharacterBody2D" method="_on_left_button_up"]
-[connection signal="button_down" from="CanvasLayer/GameUI/Control/Right" to="CharacterBody2D" method="_on_right_button_down"]
-[connection signal="button_up" from="CanvasLayer/GameUI/Control/Right" to="CharacterBody2D" method="_on_right_button_up"]
-[connection signal="button_down" from="CanvasLayer/GameUI/Control/Forward" to="CharacterBody2D" method="_on_forward_button_down"]
-[connection signal="button_up" from="CanvasLayer/GameUI/Control/Forward" to="CharacterBody2D" method="_on_forward_button_up"]
+[connection signal="button_down" from="CanvasLayer/GameUI/Control/VBoxContainer/Forward" to="CharacterBody2D" method="_on_forward_button_down"]
+[connection signal="button_up" from="CanvasLayer/GameUI/Control/VBoxContainer/Forward" to="CharacterBody2D" method="_on_forward_button_up"]
+[connection signal="button_down" from="CanvasLayer/GameUI/Control/VBoxContainer/HBoxContainer/Left" to="CharacterBody2D" method="_on_left_button_down"]
+[connection signal="button_up" from="CanvasLayer/GameUI/Control/VBoxContainer/HBoxContainer/Left" to="CharacterBody2D" method="_on_left_button_up"]
+[connection signal="button_down" from="CanvasLayer/GameUI/Control/VBoxContainer/HBoxContainer/Right" to="CharacterBody2D" method="_on_right_button_down"]
+[connection signal="button_up" from="CanvasLayer/GameUI/Control/VBoxContainer/HBoxContainer/Right" to="CharacterBody2D" method="_on_right_button_up"]
 [connection signal="pressed" from="CanvasLayer/GameOverPanel/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/GameOverPanel/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/StartMenuPanel/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]

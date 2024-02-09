@@ -1,7 +1,7 @@
 extends Node2D
 var score:float = 0
 var gravity_direction:Vector2 = Vector2.ZERO
-@export var gravity_pull = 0.1
+@export var gravity_pull = 0.2
 @onready var character_body_2d: RigidBody2D = $CharacterBody2D
 @onready var black_hole: TextureRect = $CanvasLayer2/BlackHole
 @onready var game_over_panel: Panel = $CanvasLayer/GameOverPanel
@@ -49,6 +49,7 @@ func _on_start_button_pressed() -> void:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
 		is_dead = true
+		game_ui.hide()
 		character_body_2d.die()
 		game_over_panel.show()
 		fuel_spawner_timer.stop()
@@ -60,8 +61,9 @@ func round_place(num:float,places:int)->float:
 func _on_level_timer_timeout() -> void:
 	if is_on_menu: return
 	if is_dead: return
-	score = score+(50/character_distance_black_hole)*level
-	score_label.text = str("Score: ",round_place(score,1))
+	var add_score:float = (50/character_distance_black_hole)*level
+	score = score+add_score
+	score_label.text = str("Score: ",round_place(score,1)," +",round_place(add_score,1))
 	if fmod(score, 20*level) == 0.0:
 		level = clamp(level+1,1,max_level)
 
