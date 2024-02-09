@@ -11,6 +11,9 @@ class_name Player
 var thrust := Vector2.ZERO
 var rotation_dir:float = 0
 var teleport_pos:Vector2 = Vector2.ZERO
+var is_thrusting:bool = false
+var is_turning_left:bool = false
+var is_turning_right:bool = false
 
 var start_position:Vector2
 var start_rotation:float
@@ -41,7 +44,9 @@ func _ready()->void:
 func get_input()->void:
 	thrust = Vector2.ZERO
 	rotation_dir = Input.get_axis("ui_left", "ui_right")
-	if Input.is_action_pressed("ui_up"):
+	if is_turning_left:
+		rotation_dir = -1
+	if Input.is_action_pressed("ui_up") or is_thrusting:
 		thrust = transform.x * engine_power
 		left_turbune.show()
 		right_turbune.show()
@@ -76,3 +81,26 @@ func _integrate_forces(state: PhysicsDirectBodyState2D)->void:
 	xform.origin.x = wrapf(xform.origin.x, 0, screen_size.x)
 	xform.origin.y = wrapf(xform.origin.y, 0, screen_size.y)
 	state.transform = xform
+
+func _on_left_button_down() -> void:
+	is_turning_left = true
+
+
+func _on_left_button_up() -> void:
+	is_turning_left = false
+
+
+func _on_right_button_down() -> void:
+	is_turning_right = true
+
+
+func _on_right_button_up() -> void:
+	is_turning_right = false
+
+
+func _on_forward_button_down() -> void:
+	is_thrusting = true
+
+
+func _on_forward_button_up() -> void:
+	is_thrusting = false

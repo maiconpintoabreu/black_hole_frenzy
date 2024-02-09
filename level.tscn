@@ -1,40 +1,51 @@
-[gd_scene load_steps=26 format=3 uid="uid://bg6h6qelnbdg4"]
+[gd_scene load_steps=34 format=3 uid="uid://bg6h6qelnbdg4"]
 
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_8tvoa"]
-[ext_resource type="Shader" path="res://BlackHoleWaves.gdshader" id="1_o62wn"]
 [ext_resource type="Script" path="res://Scripts/FuelSpawner.gd" id="2_b5i8p"]
 [ext_resource type="Texture2D" uid="uid://jv42fxpmj1ii" path="res://Sprites/ship.png" id="2_nexx3"]
 [ext_resource type="Texture2D" uid="uid://cuxv3famsy8bx" path="res://Sprites/stars.png" id="2_ngaxq"]
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="2_odqwc"]
 [ext_resource type="Texture2D" uid="uid://cm4epyxrreig6" path="res://icon.svg" id="3_7aww1"]
+[ext_resource type="Texture2D" uid="uid://do0wv6ycoc135" path="res://Sprites/black_hole1.png" id="4_6wbs4"]
+[ext_resource type="Texture2D" uid="uid://b1n46wse31nxe" path="res://Sprites/black_hole10.png" id="4_phhkk"]
 [ext_resource type="Theme" uid="uid://dcxurlovagrir" path="res://button_theme.tres" id="5_n0hgv"]
+[ext_resource type="Texture2D" uid="uid://dq4ja2w8y3y5s" path="res://Sprites/black_hole2.png" id="7_5syj6"]
 [ext_resource type="Shader" path="res://PlayerShader.gdshader" id="7_lynbn"]
 [ext_resource type="Texture2D" uid="uid://b1ldawo73tlsr" path="res://Sprites/jet1.png" id="8_58pl1"]
+[ext_resource type="Texture2D" uid="uid://bt8j57mle3ek7" path="res://Sprites/black_hole3.png" id="8_q25qj"]
+[ext_resource type="Texture2D" uid="uid://dqnn5cgpytdnf" path="res://Sprites/black_hole4.png" id="9_3hnie"]
 [ext_resource type="Texture2D" uid="uid://bolqm2q07pwr8" path="res://Sprites/jet2.png" id="9_h88hm"]
+[ext_resource type="Texture2D" uid="uid://bg2n67etx7tq0" path="res://Sprites/black_hole5.png" id="10_icigd"]
 [ext_resource type="Texture2D" uid="uid://svkwri3nnato" path="res://Sprites/jet3.png" id="10_krw8b"]
 [ext_resource type="Texture2D" uid="uid://u33dpvyh4ejd" path="res://Sprites/jet4.png" id="11_5xegu"]
-
-[sub_resource type="Gradient" id="Gradient_m1x2y"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_ut724"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_b0j56"]
-seamless = true
-color_ramp = SubResource("Gradient_m1x2y")
-noise = SubResource("FastNoiseLite_ut724")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_2kyku"]
-shader = ExtResource("1_o62wn")
-shader_parameter/amplitude = 0.66
-shader_parameter/frequency = 15.0
-shader_parameter/rippleRate = 0.5
-shader_parameter/set_color = Color(0, 0, 0.482353, 1)
-shader_parameter/waveAmplitude = 0.1
-shader_parameter/waveFrequency = 1.0
-shader_parameter/blendingAmount = 0.6
-shader_parameter/noise = SubResource("NoiseTexture2D_b0j56")
+[ext_resource type="Texture2D" uid="uid://g6vc2vnl58wp" path="res://Sprites/black_hole6.png" id="11_uqrba"]
+[ext_resource type="Texture2D" uid="uid://80svh1ydftxg" path="res://Sprites/black_hole7.png" id="12_d75fx"]
+[ext_resource type="Texture2D" uid="uid://bj1886dqwfgvy" path="res://Sprites/black_hole8.png" id="13_munuf"]
+[ext_resource type="Texture2D" uid="uid://dm3v6b312cs4e" path="res://Sprites/black_hole9.png" id="14_o7gn4"]
+[ext_resource type="Texture2D" uid="uid://bov74l50gr1m7" path="res://Sprites/black_hole11.png" id="15_lespo"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_l7ngj"]
+
+[sub_resource type="Animation" id="Animation_nmm0o"]
+resource_name = "loop"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0001, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("4_6wbs4"), ExtResource("4_6wbs4"), ExtResource("7_5syj6"), ExtResource("8_q25qj"), ExtResource("9_3hnie"), ExtResource("10_icigd"), ExtResource("11_uqrba"), ExtResource("12_d75fx"), ExtResource("13_munuf"), ExtResource("14_o7gn4"), ExtResource("4_phhkk"), ExtResource("15_lespo")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uv85x"]
+_data = {
+"loop": SubResource("Animation_nmm0o")
+}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uepyf"]
 bg_color = Color(0.121569, 0.121569, 0.121569, 0.141176)
@@ -128,8 +139,8 @@ texture = ExtResource("2_ngaxq")
 expand_mode = 1
 stretch_mode = 2
 
-[node name="BlackHole" type="ColorRect" parent="CanvasLayer2"]
-material = SubResource("ShaderMaterial_2kyku")
+[node name="BlackHole" type="TextureRect" parent="CanvasLayer2"]
+modulate = Color(0.419813, 0.419813, 0.419813, 1)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -141,10 +152,10 @@ offset_right = 143.5
 offset_bottom = 143.5
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+texture = ExtResource("4_phhkk")
 
 [node name="Area2D" type="Area2D" parent="CanvasLayer2/BlackHole"]
-position = Vector2(146.5, 145.5)
+position = Vector2(237, 165)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer2/BlackHole/Area2D"]
 shape = SubResource("CircleShape2D_l7ngj")
@@ -153,6 +164,12 @@ shape = SubResource("CircleShape2D_l7ngj")
 position = Vector2(0, 1)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("3_7aww1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer2/BlackHole"]
+libraries = {
+"": SubResource("AnimationLibrary_uv85x")
+}
+autoplay = "loop"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -202,6 +219,39 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "Power"
 
+[node name="Control" type="Control" parent="CanvasLayer/GameUI"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 46.0
+offset_top = -81.0
+offset_right = 86.0
+offset_bottom = -41.0
+grow_vertical = 0
+
+[node name="Left" type="Button" parent="CanvasLayer/GameUI/Control"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+theme = ExtResource("5_n0hgv")
+text = "L"
+
+[node name="Right" type="Button" parent="CanvasLayer/GameUI/Control"]
+offset_left = 34.0
+offset_right = 51.0
+offset_bottom = 29.0
+theme = ExtResource("5_n0hgv")
+text = "R"
+
+[node name="Forward" type="Button" parent="CanvasLayer/GameUI/Control"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = -39.0
+offset_right = 33.0
+offset_bottom = -8.0
+text = "^"
+
 [node name="GameOverPanel" type="Panel" parent="CanvasLayer"]
 visible = false
 anchors_preset = 15
@@ -247,6 +297,7 @@ theme = ExtResource("5_n0hgv")
 text = "Quit"
 
 [node name="StartMenuPanel" type="Panel" parent="CanvasLayer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -327,6 +378,12 @@ anchor_mode = 0
 [connection signal="timeout" from="LevelTimer" to="." method="_on_level_timer_timeout"]
 [connection signal="timeout" from="FuelSpawnerTimer" to="FuelSpawner" method="_on_fuel_spawner_timer_timeout"]
 [connection signal="body_entered" from="CanvasLayer2/BlackHole/Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="button_down" from="CanvasLayer/GameUI/Control/Left" to="CharacterBody2D" method="_on_left_button_down"]
+[connection signal="button_up" from="CanvasLayer/GameUI/Control/Left" to="CharacterBody2D" method="_on_left_button_up"]
+[connection signal="button_down" from="CanvasLayer/GameUI/Control/Right" to="CharacterBody2D" method="_on_right_button_down"]
+[connection signal="button_up" from="CanvasLayer/GameUI/Control/Right" to="CharacterBody2D" method="_on_right_button_up"]
+[connection signal="button_down" from="CanvasLayer/GameUI/Control/Forward" to="CharacterBody2D" method="_on_forward_button_down"]
+[connection signal="button_up" from="CanvasLayer/GameUI/Control/Forward" to="CharacterBody2D" method="_on_forward_button_up"]
 [connection signal="pressed" from="CanvasLayer/GameOverPanel/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/GameOverPanel/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/StartMenuPanel/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
