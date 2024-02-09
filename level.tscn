@@ -1,11 +1,10 @@
-[gd_scene load_steps=34 format=3 uid="uid://bg6h6qelnbdg4"]
+[gd_scene load_steps=33 format=3 uid="uid://bg6h6qelnbdg4"]
 
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_8tvoa"]
 [ext_resource type="Script" path="res://Scripts/FuelSpawner.gd" id="2_b5i8p"]
 [ext_resource type="Texture2D" uid="uid://jv42fxpmj1ii" path="res://Sprites/ship.png" id="2_nexx3"]
 [ext_resource type="Texture2D" uid="uid://cuxv3famsy8bx" path="res://Sprites/stars.png" id="2_ngaxq"]
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="2_odqwc"]
-[ext_resource type="Texture2D" uid="uid://cm4epyxrreig6" path="res://icon.svg" id="3_7aww1"]
 [ext_resource type="Texture2D" uid="uid://do0wv6ycoc135" path="res://Sprites/black_hole1.png" id="4_6wbs4"]
 [ext_resource type="Texture2D" uid="uid://b1n46wse31nxe" path="res://Sprites/black_hole10.png" id="4_phhkk"]
 [ext_resource type="Theme" uid="uid://dcxurlovagrir" path="res://button_theme.tres" id="5_n0hgv"]
@@ -25,6 +24,7 @@
 [ext_resource type="Texture2D" uid="uid://bov74l50gr1m7" path="res://Sprites/black_hole11.png" id="15_lespo"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_l7ngj"]
+radius = 17.0
 
 [sub_resource type="Animation" id="Animation_nmm0o"]
 resource_name = "loop"
@@ -155,15 +155,10 @@ grow_vertical = 2
 texture = ExtResource("4_phhkk")
 
 [node name="Area2D" type="Area2D" parent="CanvasLayer2/BlackHole"]
-position = Vector2(237, 165)
+position = Vector2(236, 164)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer2/BlackHole/Area2D"]
 shape = SubResource("CircleShape2D_l7ngj")
-
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer2/BlackHole/Area2D"]
-position = Vector2(0, 1)
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("3_7aww1")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer2/BlackHole"]
 libraries = {
@@ -221,48 +216,63 @@ grow_vertical = 0
 text = "Fuel"
 horizontal_alignment = 1
 
-[node name="Control" type="Control" parent="CanvasLayer/GameUI"]
+[node name="MobileUI" type="Control" parent="CanvasLayer/GameUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GameUI/MobileUI"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 179.0
+offset_right = 178.0
+offset_bottom = 283.0
+
+[node name="Forward" type="Button" parent="CanvasLayer/GameUI/MobileUI/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+theme = ExtResource("5_n0hgv")
+text = "^"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/GameUI/MobileUI/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Left" type="Button" parent="CanvasLayer/GameUI/MobileUI/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme = ExtResource("5_n0hgv")
+text = "L"
+
+[node name="Right" type="Button" parent="CanvasLayer/GameUI/MobileUI/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme = ExtResource("5_n0hgv")
+text = "R"
+
+[node name="ToggleMobileUI" type="Button" parent="CanvasLayer/GameUI"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 46.0
-offset_top = -81.0
-offset_right = 86.0
-offset_bottom = -41.0
+offset_left = 449.0
+offset_top = -317.0
+offset_right = 472.0
+offset_bottom = -286.0
 grow_vertical = 0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GameUI/Control"]
-layout_mode = 0
-offset_left = -16.0
-offset_top = -54.0
-offset_right = 134.0
-offset_bottom = 46.0
-
-[node name="Forward" type="Button" parent="CanvasLayer/GameUI/Control/VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-size_flags_horizontal = 4
-theme = ExtResource("5_n0hgv")
-text = "^"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/GameUI/Control/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 20
-
-[node name="Left" type="Button" parent="CanvasLayer/GameUI/Control/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("5_n0hgv")
-text = "L"
-
-[node name="Right" type="Button" parent="CanvasLayer/GameUI/Control/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("5_n0hgv")
-text = "R"
+toggle_mode = true
+button_pressed = true
+text = "M"
 
 [node name="GameOverPanel" type="Panel" parent="CanvasLayer"]
 visible = false
@@ -390,12 +400,13 @@ anchor_mode = 0
 [connection signal="timeout" from="LevelTimer" to="." method="_on_level_timer_timeout"]
 [connection signal="timeout" from="FuelSpawnerTimer" to="FuelSpawner" method="_on_fuel_spawner_timer_timeout"]
 [connection signal="body_entered" from="CanvasLayer2/BlackHole/Area2D" to="." method="_on_area_2d_body_entered"]
-[connection signal="button_down" from="CanvasLayer/GameUI/Control/VBoxContainer/Forward" to="CharacterBody2D" method="_on_forward_button_down"]
-[connection signal="button_up" from="CanvasLayer/GameUI/Control/VBoxContainer/Forward" to="CharacterBody2D" method="_on_forward_button_up"]
-[connection signal="button_down" from="CanvasLayer/GameUI/Control/VBoxContainer/HBoxContainer/Left" to="CharacterBody2D" method="_on_left_button_down"]
-[connection signal="button_up" from="CanvasLayer/GameUI/Control/VBoxContainer/HBoxContainer/Left" to="CharacterBody2D" method="_on_left_button_up"]
-[connection signal="button_down" from="CanvasLayer/GameUI/Control/VBoxContainer/HBoxContainer/Right" to="CharacterBody2D" method="_on_right_button_down"]
-[connection signal="button_up" from="CanvasLayer/GameUI/Control/VBoxContainer/HBoxContainer/Right" to="CharacterBody2D" method="_on_right_button_up"]
+[connection signal="button_down" from="CanvasLayer/GameUI/MobileUI/VBoxContainer/Forward" to="CharacterBody2D" method="_on_forward_button_down"]
+[connection signal="button_up" from="CanvasLayer/GameUI/MobileUI/VBoxContainer/Forward" to="CharacterBody2D" method="_on_forward_button_up"]
+[connection signal="button_down" from="CanvasLayer/GameUI/MobileUI/VBoxContainer/HBoxContainer/Left" to="CharacterBody2D" method="_on_left_button_down"]
+[connection signal="button_up" from="CanvasLayer/GameUI/MobileUI/VBoxContainer/HBoxContainer/Left" to="CharacterBody2D" method="_on_left_button_up"]
+[connection signal="button_down" from="CanvasLayer/GameUI/MobileUI/VBoxContainer/HBoxContainer/Right" to="CharacterBody2D" method="_on_right_button_down"]
+[connection signal="button_up" from="CanvasLayer/GameUI/MobileUI/VBoxContainer/HBoxContainer/Right" to="CharacterBody2D" method="_on_right_button_up"]
+[connection signal="toggled" from="CanvasLayer/GameUI/ToggleMobileUI" to="." method="_on_button_toggled"]
 [connection signal="pressed" from="CanvasLayer/GameOverPanel/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/GameOverPanel/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/StartMenuPanel/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]

@@ -13,6 +13,7 @@ var gravity_direction:Vector2 = Vector2.ZERO
 var character_by_black_hole:Vector2
 var character_distance_black_hole:float
 @onready var area_2d: Area2D = $CanvasLayer2/BlackHole/Area2D
+@onready var mobile_ui: Control = $CanvasLayer/GameUI/MobileUI
 
 var level:int = 1
 var max_level:int = 10
@@ -69,3 +70,10 @@ func _on_level_timer_timeout() -> void:
 
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()
+
+
+func _on_button_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		mobile_ui.show()
+	else:
+		mobile_ui.hide()
