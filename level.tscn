@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://bg6h6qelnbdg4"]
+[gd_scene load_steps=36 format=3 uid="uid://bg6h6qelnbdg4"]
 
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_8tvoa"]
 [ext_resource type="Script" path="res://Scripts/FuelSpawner.gd" id="2_b5i8p"]
@@ -23,6 +23,8 @@
 [ext_resource type="Texture2D" uid="uid://dm3v6b312cs4e" path="res://Sprites/black_hole9.png" id="14_o7gn4"]
 [ext_resource type="Texture2D" uid="uid://bov74l50gr1m7" path="res://Sprites/black_hole11.png" id="15_lespo"]
 [ext_resource type="Texture2D" uid="uid://bfmjv7i0rnkvo" path="res://Sprites/arrow.png" id="16_nnd1i"]
+[ext_resource type="Texture2D" uid="uid://dxf8rq60tktv2" path="res://Sprites/mobile.png" id="17_luiiw"]
+[ext_resource type="Texture2D" uid="uid://b2eo3olq0j5ph" path="res://Sprites/pause.png" id="18_pkim3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_l7ngj"]
 radius = 17.0
@@ -265,23 +267,30 @@ theme_override_constants/separation = 20
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -45.0
-offset_bottom = 40.0
+offset_left = -88.0
+offset_bottom = 56.0
 grow_horizontal = 0
 
 [node name="ToggleMobileUI" type="Button" parent="CanvasLayer/HBoxContainer2"]
 layout_mode = 2
+size_flags_horizontal = 3
 toggle_mode = true
 button_pressed = true
-text = "M"
+icon = ExtResource("17_luiiw")
 flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="PauseButton" type="Button" parent="CanvasLayer/HBoxContainer2"]
 layout_mode = 2
-text = "P"
+size_flags_horizontal = 3
+icon = ExtResource("18_pkim3")
 flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="GameOverPanel" type="Panel" parent="CanvasLayer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
