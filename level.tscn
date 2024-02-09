@@ -22,7 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://bj1886dqwfgvy" path="res://Sprites/black_hole8.png" id="13_munuf"]
 [ext_resource type="Texture2D" uid="uid://dm3v6b312cs4e" path="res://Sprites/black_hole9.png" id="14_o7gn4"]
 [ext_resource type="Texture2D" uid="uid://bov74l50gr1m7" path="res://Sprites/black_hole11.png" id="15_lespo"]
-[ext_resource type="Theme" uid="uid://efghuun67a4n" path="res://mobile_ui_theme.tres" id="16_cmt4q"]
+[ext_resource type="Texture2D" uid="uid://bfmjv7i0rnkvo" path="res://Sprites/arrow.png" id="16_nnd1i"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_l7ngj"]
 radius = 17.0
@@ -226,24 +226,28 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Forward" type="Button" parent="CanvasLayer/GameUI/MobileUI"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -110.0
-offset_top = 55.0
-offset_right = -60.0
-offset_bottom = 105.0
-grow_horizontal = 0
-grow_vertical = 2
-size_flags_horizontal = 4
-focus_mode = 0
-theme = ExtResource("16_cmt4q")
-text = "^"
+[node name="Forward" type="TouchScreenButton" parent="CanvasLayer/GameUI/MobileUI"]
+position = Vector2(428, 231)
+rotation = 1.5708
+scale = Vector2(3, 3)
+texture_normal = ExtResource("16_nnd1i")
+action = "ui_up"
+visibility_mode = 1
+
+[node name="Right" type="TouchScreenButton" parent="CanvasLayer/GameUI/MobileUI"]
+position = Vector2(164, 281)
+rotation = 3.14159
+scale = Vector2(3, 3)
+texture_normal = ExtResource("16_nnd1i")
+action = "ui_right"
+visibility_mode = 1
+
+[node name="Left" type="TouchScreenButton" parent="CanvasLayer/GameUI/MobileUI"]
+position = Vector2(42, 233)
+scale = Vector2(3, 3)
+texture_normal = ExtResource("16_nnd1i")
+action = "ui_left"
+visibility_mode = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/GameUI/MobileUI"]
 layout_mode = 1
@@ -256,22 +260,6 @@ offset_right = 175.0
 offset_bottom = 105.0
 grow_vertical = 2
 theme_override_constants/separation = 20
-
-[node name="Left" type="Button" parent="CanvasLayer/GameUI/MobileUI/HBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme = ExtResource("16_cmt4q")
-text = "L"
-
-[node name="Right" type="Button" parent="CanvasLayer/GameUI/MobileUI/HBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme = ExtResource("16_cmt4q")
-text = "R"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer"]
 anchors_preset = 1
@@ -286,10 +274,12 @@ layout_mode = 2
 toggle_mode = true
 button_pressed = true
 text = "M"
+flat = true
 
 [node name="PauseButton" type="Button" parent="CanvasLayer/HBoxContainer2"]
 layout_mode = 2
 text = "P"
+flat = true
 
 [node name="GameOverPanel" type="Panel" parent="CanvasLayer"]
 visible = false
@@ -468,12 +458,6 @@ anchor_mode = 0
 [connection signal="timeout" from="LevelTimer" to="." method="_on_level_timer_timeout"]
 [connection signal="timeout" from="FuelSpawnerTimer" to="FuelSpawner" method="_on_fuel_spawner_timer_timeout"]
 [connection signal="body_entered" from="CanvasLayer2/BlackHole/Area2D" to="." method="_on_area_2d_body_entered"]
-[connection signal="button_down" from="CanvasLayer/GameUI/MobileUI/Forward" to="CharacterBody2D" method="_on_forward_button_down"]
-[connection signal="button_up" from="CanvasLayer/GameUI/MobileUI/Forward" to="CharacterBody2D" method="_on_forward_button_up"]
-[connection signal="button_down" from="CanvasLayer/GameUI/MobileUI/HBoxContainer/Left" to="CharacterBody2D" method="_on_left_button_down"]
-[connection signal="button_up" from="CanvasLayer/GameUI/MobileUI/HBoxContainer/Left" to="CharacterBody2D" method="_on_left_button_up"]
-[connection signal="button_down" from="CanvasLayer/GameUI/MobileUI/HBoxContainer/Right" to="CharacterBody2D" method="_on_right_button_down"]
-[connection signal="button_up" from="CanvasLayer/GameUI/MobileUI/HBoxContainer/Right" to="CharacterBody2D" method="_on_right_button_up"]
 [connection signal="toggled" from="CanvasLayer/HBoxContainer2/ToggleMobileUI" to="." method="_on_button_toggled"]
 [connection signal="toggled" from="CanvasLayer/HBoxContainer2/ToggleMobileUI" to="CharacterBody2D" method="_on_toggle_mobile_ui_toggled"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer2/PauseButton" to="." method="_on_pause_button_pressed"]

@@ -46,9 +46,9 @@ jobs:
      mkdir -p ./Build/win
      mkdir -p ./Build/mac
      ./godot --headless --path ./ --export-release "Web" ./Build/web/index.html
-     ./godot --headless --path ./ --export-release "Linux" ./Build/linux/godoph.x86_64
-     ./godot --headless --path ./ --export-release "Windows" ./Build/win/godoph.exe
-     ./godot --headless --path ./ --export-release "Mac" ./Build/mac/godoph.zip
+     ./godot --headless --path ./ --export-release "Linux" ./Build/linux/game.x86_64
+     ./godot --headless --path ./ --export-release "Windows" ./Build/win/game.exe
+     ./godot --headless --path ./ --export-release "Mac" ./Build/mac/game.zip
     
   - name: Download + Authorize Butler
     run: |
