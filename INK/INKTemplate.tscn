@@ -1,0 +1,95 @@
+[gd_scene load_steps=3 format=3 uid="uid://blepeuhdhgk0q"]
+
+[ext_resource type="Script" path="res://INK/ink_handler.gd" id="1_4wyte"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ui0xg"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="CanvasLayer" type="CanvasLayer"]
+layer = 2
+
+[node name="InkTemplate" type="Control" parent="."]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4wyte")
+
+[node name="Panel" type="Panel" parent="InkTemplate"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ui0xg")
+
+[node name="DialogArea" type="TextureRect" parent="InkTemplate"]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="DialogText" type="RichTextLabel" parent="InkTemplate/DialogArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 34.0
+offset_top = 77.0
+offset_right = -37.0
+offset_bottom = -63.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+bbcode_enabled = true
+text = "Test text used by the dialog
+
+[url=1][color=green]- Test[/color][/url]
+[color=green][ul][url=1] Test[/url][/ul][/color]"
+scroll_following = true
+tab_size = 2
+
+[node name="DialogSkip" type="Button" parent="InkTemplate/DialogArea"]
+visible = false
+layout_mode = 0
+offset_left = 323.0
+offset_top = 225.0
+offset_right = 364.0
+offset_bottom = 256.0
+focus_mode = 0
+text = "Skip"
+
+[node name="DialogNext" type="Button" parent="InkTemplate/DialogArea"]
+visible = false
+layout_mode = 0
+offset_left = 323.0
+offset_top = 225.0
+offset_right = 368.0
+offset_bottom = 256.0
+focus_mode = 0
+text = "Next"
+
+[node name="DialogTimer" type="Timer" parent="InkTemplate"]
+process_mode = 3
+wait_time = 2.0
+one_shot = true
+
+[node name="DialogLettersTimer" type="Timer" parent="InkTemplate"]
+process_mode = 3
+wait_time = 0.06
+autostart = true
+
+[connection signal="visibility_changed" from="InkTemplate/DialogArea" to="InkTemplate" method="_on_dialog_area_visibility_changed"]
+[connection signal="meta_clicked" from="InkTemplate/DialogArea/DialogText" to="InkTemplate" method="_on_dialog_text_meta_clicked"]
+[connection signal="pressed" from="InkTemplate/DialogArea/DialogSkip" to="InkTemplate" method="_on_dialog_skip_pressed"]
+[connection signal="pressed" from="InkTemplate/DialogArea/DialogNext" to="InkTemplate" method="_on_dialog_skip_pressed"]
+[connection signal="timeout" from="InkTemplate/DialogTimer" to="InkTemplate" method="_on_dialog_timer_timeout"]
+[connection signal="timeout" from="InkTemplate/DialogLettersTimer" to="InkTemplate" method="_on_dialog_letters_timer_timeout"]
