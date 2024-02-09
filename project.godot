@@ -32,6 +32,10 @@ window/size/viewport_height=320
 window/stretch/mode="canvas_items"
 window/stretch/scale_mode="integer"
 
+[editor]
+
+export/convert_text_resources_to_binary=false
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/inkgd/plugin.cfg")
