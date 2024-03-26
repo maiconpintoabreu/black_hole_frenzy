@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://bg6h6qelnbdg4"]
+[gd_scene load_steps=42 format=3 uid="uid://bg6h6qelnbdg4"]
 
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_8tvoa"]
 [ext_resource type="Script" path="res://Scripts/FuelSpawner.gd" id="2_b5i8p"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="2_odqwc"]
 [ext_resource type="Texture2D" uid="uid://do0wv6ycoc135" path="res://Sprites/black_hole1.png" id="4_6wbs4"]
 [ext_resource type="Texture2D" uid="uid://b1n46wse31nxe" path="res://Sprites/black_hole10.png" id="4_phhkk"]
+[ext_resource type="Shader" path="res://Blackhole.gdshader" id="5_hllvw"]
 [ext_resource type="Theme" uid="uid://dcxurlovagrir" path="res://button_theme.tres" id="5_n0hgv"]
 [ext_resource type="Texture2D" uid="uid://dq4ja2w8y3y5s" path="res://Sprites/black_hole2.png" id="7_5syj6"]
 [ext_resource type="Shader" path="res://PlayerShader.gdshader" id="7_lynbn"]
@@ -25,6 +26,25 @@
 [ext_resource type="Texture2D" uid="uid://bfmjv7i0rnkvo" path="res://Sprites/arrow.png" id="16_nnd1i"]
 [ext_resource type="Texture2D" uid="uid://dxf8rq60tktv2" path="res://Sprites/mobile.png" id="17_luiiw"]
 [ext_resource type="Texture2D" uid="uid://b2eo3olq0j5ph" path="res://Sprites/pause.png" id="18_pkim3"]
+[ext_resource type="Script" path="res://RandomSpawner.gd" id="27_75acc"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vbhu4"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_y5l7y"]
+noise = SubResource("FastNoiseLite_vbhu4")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_svn4t"]
+shader = ExtResource("5_hllvw")
+shader_parameter/color_signal = Color(0.761304, 0, 0.165995, 1)
+shader_parameter/size = 1.0
+shader_parameter/zoom = 0.0
+shader_parameter/speed = 3.0
+shader_parameter/angular_speed = 2.5
+shader_parameter/thickness = 0.28
+shader_parameter/radius = 0.25
+shader_parameter/radial_speed = 0.0499999
+shader_parameter/alpha = 1.0
+shader_parameter/textureNoise = SubResource("NoiseTexture2D_y5l7y")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_l7ngj"]
 radius = 17.0
@@ -115,6 +135,12 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Curve2D" id="Curve2D_u6f0h"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -12, 344, 0, 0, 0, 0, 499, 342, 0, 0, 0, 0, 499, -21, 0, 0, 0, 0, -26, -21, 0, 0, 0, 0, -28, 342, 0, 0, 0, 0, -12, 344)
+}
+point_count = 6
+
 [node name="Level" type="Node2D"]
 script = ExtResource("1_8tvoa")
 metadata/_edit_vertical_guides_ = [261.0]
@@ -159,6 +185,12 @@ texture = ExtResource("4_6wbs4")
 
 [node name="Area2D" type="Area2D" parent="CanvasLayer2/BlackHole"]
 position = Vector2(236, 164)
+
+[node name="ColorRect" type="Sprite2D" parent="CanvasLayer2/BlackHole/Area2D"]
+material = SubResource("ShaderMaterial_svn4t")
+position = Vector2(-1.52588e-05, 0)
+scale = Vector2(5, 5)
+texture = ExtResource("16_nnd1i")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer2/BlackHole/Area2D"]
 shape = SubResource("CircleShape2D_l7ngj")
@@ -224,6 +256,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -3.0
+offset_right = -4.0
+offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
@@ -426,7 +462,8 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_ak05v")
 text = "Black Hole Frenzy"
 
 [node name="CharacterBody2D" type="RigidBody2D" parent="."]
-position = Vector2(177, 89)
+position = Vector2(48, 42)
+collision_mask = 3
 mass = 0.01
 gravity_scale = 0.0
 can_sleep = false
@@ -463,6 +500,21 @@ flip_h = true
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
 
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_u6f0h")
+
+[node name="RandomSpawner" type="PathFollow2D" parent="Path2D" node_paths=PackedStringArray("black_hole", "level", "level_node")]
+position = Vector2(-12, 344)
+rotation = -0.00391387
+rotates = false
+script = ExtResource("27_75acc")
+black_hole = NodePath("../../CanvasLayer2/BlackHole/Area2D")
+level = NodePath("../..")
+level_node = NodePath("../..")
+
+[node name="Timer" type="Timer" parent="Path2D/RandomSpawner"]
+one_shot = true
+
 [connection signal="timeout" from="LevelTimer" to="." method="_on_level_timer_timeout"]
 [connection signal="timeout" from="FuelSpawnerTimer" to="FuelSpawner" method="_on_fuel_spawner_timer_timeout"]
 [connection signal="body_entered" from="CanvasLayer2/BlackHole/Area2D" to="." method="_on_area_2d_body_entered"]
@@ -476,3 +528,4 @@ anchor_mode = 0
 [connection signal="pressed" from="CanvasLayer/PausePanel/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/StartMenuPanel/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/StartMenuPanel/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="timeout" from="Path2D/RandomSpawner/Timer" to="Path2D/RandomSpawner" method="_on_timer_timeout"]

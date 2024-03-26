@@ -35,8 +35,12 @@ func die()->void:
 func die_deferred()->void:
 	freeze = true
 	is_dead = true
+	left_turbune.hide()
+	right_turbune.hide()
+
 func refill_fuel(fuel:float):
 	power_bar.value = power_bar.value+fuel
+
 func _ready()->void:
 	start_position = global_position
 	start_rotation = global_rotation

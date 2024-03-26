@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://b0dsayct736nd"]
+
+[ext_resource type="Script" path="res://Scripts/Rock.gd" id="1_4e8by"]
+[ext_resource type="Texture2D" uid="uid://c1i4dw0dp3ft0" path="res://Sprites/rock.png" id="2_p1104"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_murfa"]
+radius = 2.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_84dud"]
+size = Vector2(12, 11)
+
+[node name="Rock" type="RigidBody2D"]
+modulate = Color(1, 0, 0, 1)
+collision_layer = 8
+mass = 0.01
+gravity_scale = 0.0
+linear_damp = 1.0
+script = ExtResource("1_4e8by")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_murfa")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_p1104")
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_84dud")
+
+[connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]
+[connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]

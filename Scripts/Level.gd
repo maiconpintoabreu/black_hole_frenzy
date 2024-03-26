@@ -1,4 +1,5 @@
 extends Node2D
+class_name Level
 var score:float = 0
 var gravity_direction:Vector2 = Vector2.ZERO
 @export var gravity_pull = 0.2
@@ -36,7 +37,7 @@ func _physics_process(_delta: float) -> void:
 	character_by_black_hole = character_body_2d.global_position.direction_to(area_2d.global_position)
 	character_distance_black_hole = character_body_2d.global_position.distance_to(area_2d.global_position)
 	gravity_direction = character_by_black_hole.normalized()
-	character_body_2d.apply_force(gravity_direction*(gravity_pull*level),gravity_direction)
+	character_body_2d.apply_force(gravity_direction*(gravity_pull*(level)),gravity_direction)
 
 func _on_start_button_pressed() -> void:
 	get_tree().paused = false
@@ -51,16 +52,18 @@ func _on_start_button_pressed() -> void:
 	for fuel in fuel_spawner.get_children():
 		fuel.queue_free()
 	fuel_spawner_timer.start()
-
+func game_over()->void:
+	is_dead = true
+	game_ui.hide()
+	character_body_2d.die()
+	game_over_panel.show()
+	fuel_spawner_timer.stop()
+	for fuel in fuel_spawner.get_children():
+		fuel.queue_free()
+	
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
-		is_dead = true
-		game_ui.hide()
-		character_body_2d.die()
-		game_over_panel.show()
-		fuel_spawner_timer.stop()
-		for fuel in fuel_spawner.get_children():
-			fuel.queue_free()
+		game_over()
 func round_place(num:float,places:int)->float:
 	return (round(num*pow(10,places))/pow(10,places))
 	
